@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MBTI 궁합</title>
+	<style>
+		* {margin: 0; padding: 0; line-height: 1; font-family: sans-serif; font-size: 16px;}
+		ul, ol, li {list-style-type: none;}
+
+		h1 {text-align: center; margin-bottom: 20px; font-size: 1.5em;}
+
+		section {padding: 30px 0; margin: 0 auto;}
+		.mbti_container {width: 1000px; display: grid; grid-template-columns: 1fr 9fr 2fr; gap: 0.5em; margin: 0 auto;}
+
+		.red {background-color: #f03a36;}
+		.yellow {background-color: #fcc141;}
+		.yellowgreen {background-color: #b4d465;}
+		.green {background-color: #36b161;}
+		.blue {background-color: #2d8ff4;}
+		
+		
+		.name_list {text-transform: uppercase;}
+		.name_list li p {font-size: 0.8em; font-weight: 400; flex-shrink: 0;}
+		.name_list li p:first-child {color: #333; font-size: 1em; font-weight: 700;}
+
+		.top_box {grid-column: 2/3;}
+		.top_box .name_list {display: flex;}
+		.top_box .name_list li {display: flex; flex-wrap: wrap; flex-direction: column-reverse; width: 6.25%; text-align: center;}
+		.top_box .name_list li p {margin-top: 0.2em;}
+
+		.left_box {grid-column: 1;}
+		.left_box .name_list {height: 100%;}
+		.left_box .name_list li {display: flex; flex-direction: row-reverse; justify-content: flex-start; align-items: center; height: 6.25%; text-align: right; vertical-align: middle;}
+		.left_box .name_list li p {margin-left: 0.2em; writing-mode: tb-rl;}
+
+		.mbti_box {display: grid; grid-template-columns: repeat(16, 1fr);}
+		.mbti_box > div {padding-top: 100%; border: 1px solid #666; border-radius: 2px;}
+
+		.result_box ul li {padding: 5px; border-radius: 5px; margin-bottom: 10px; color: #fff; line-height: 1.2; font-weight: 700; text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);}
+	</style>
+</head>
+<body>
+	<section>
+		<h1>&lt; MBTI 궁합표 &gt;</h1>
+		<div class="mbti_container">
+			<div class="top_box"></div>
+			<div class="left_box"></div>
+			<div class="mbti_box"></div>
+			<div class="result_box">
+				<ul>
+					<li class="red">진짜 궁합 최악! <br>지구 멸망의 길</li>
+					<li class="yellow">뭐.. 최악은 면했지만.<br>그닥..</li>
+					<li class="yellowgreen">안맞는 것 맞는 것 <br>딱 반반</li>
+					<li class="green">아주 좋은 관계가 될 수 있음!</li>
+					<li class="blue">우리 인연 영원히 <br>뽀에버! 천생연분</li>
+				</ul>
+			</div>
+		</div>
+
+	</section>
+	<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+	<script>
+		const mbtiBox = document.querySelector('.mbti_box');
+		const topBox = document.querySelector('.top_box');
+		const leftBox = document.querySelector('.left_box');
+
+		const mbtiObj = {
+			infp: ['자렐'],
+			enfp: ['토미','조셉'],
+			infj: ['이안','밀키'],
+			enfj: [],
+			intj: ['데이빗'],
+			entj: ['심바','이브'],
+			intp: ['아이비','맥켄지'],
+			entp: ['벨','라바'],
+			isfp: ['알렉스','맥스','레이첼','에리카'],
+			esfp: ['테리'],
+			istp: ['윈터'],
+			estp: [],
+			isfj: ['진'],
+			esfj: ['션','헨리'],
+			istj: [],
+			estj: [],
+		}
+	
+		const matchingObj = {
+			infp: {
+				blue: ['enfj','entj'],
+				green: ['infp','enfp','infj','intj','intp','entp'],
+				yellowgreen: [],
+				yellow: [],
+				red: ['isfp','esfp','istp','estp','isfj','esfj','istj','estj']	
+			},
+			enfp: {
+				blue: ['infj','intj'],
+				green: ['enfp','enfj','entj','intp','entp'],
+				yellowgreen: [],
+				yellow: [],
+				red: ['isfp','esfp','istp','estp','isfj','esfj','istj','estj']
+			},
+			infj: {
+				blue: ['entp'],
+				green: ['infj','enfj','intj','entj','intp'],
+				yellowgreen: [],
+				yellow: [],
+				red: ['isfp','esfp','istp','estp','isfj','esfj','istj','estj']
+			},
+			enfj: {
+				blue: ['isfp'],
+				green: ['enfj','intj','entj','intp','entp'],
+				yellowgreen: [],
+				yellow: [],
+				red: ['esfp','istp','estp','isfj','esfj','istj','estj']
+			},
+			intj: {
+				blue: ['entp'],
+				green: ['intj','entj','intp'],
+				yellowgreen: ['isfp','esfp','istp','estp'],
+				yellow: ['isfj','esfj','istj','estj'],
+				red: []
+			},
+			entj: {
+				blue: ['intp'],
+				green: ['entj','entp'],
+				yellowgreen: ['isfp','esfp','istp','estp','isfj','esfj','istj','estj'],
+				yellow: [],
+				red: []
+			},
+			intp: {
+				blue: ['estj'],
+				green: ['intp','entp'],
+				yellowgreen: ['isfp','esfp','istp','estp'],
+				yellow: ['isfj','esfj','istj'],
+				red: [],
+			},
+			entp: {
+				blue: [],
+				green: ['entp'],
+				yellowgreen: ['isfp','esfp','istp','estp'],
+				yellow: ['isfj','esfj','istj','estj'],
+				red: []
+			},
+			isfp: {
+				blue: ['esfj','estj'],
+				green: [],
+				yellowgreen: ['isfj','istj'],
+				yellow: ['isfp','esfp','istp','estp'],
+				red: []
+			},
+			esfp: {
+				blue: ['isfj','istj'],
+				green: [],
+				yellowgreen: ['esfj','estj'],
+				yellow: ['esfp','istp','estp'],
+				red: []
+			},
+			istp: {
+				blue: ['esfj','estj'],
+				green: [],
+				yellowgreen: ['isfj','istj'],
+				yellow: ['istp','estp'],
+				red: []
+			},
+			estp: {
+				blue: ['isfj','istj'],
+				green: [],
+				yellowgreen: ['esfj','estj'],
+				yellow: ['estp'],
+				red: []
+			},
+			isfj: {
+				blue: [],
+				green: ['isfj','esfj','istj','estj'],
+				yellowgreen: [],
+				yellow: [],
+				red: []
+			},
+			esfj: {
+				blue: [],
+				green: ['esfj','istj','estj'],
+				yellowgreen: [],
+				yellow: [],
+				red: []
+			},
+			istj: {
+				blue: [],
+				green: ['istj','estj'],
+				yellowgreen: [],
+				yellow: [],
+				red: []
+			},
+			estj: {
+				blue: [],
+				green: ['estj'],
+				yellowgreen: [],
+				yellow: [],
+				red: []
+			},
+		}
+	
+		const matchingResult = {
+			blue: [],
+			green: [],
+			yellowgreen: [],
+			yellow: [],
+			red: []
+		}
+
+		const setMbtiHtml = function() {
+			const topUl = document.createElement('ul');
+			const leftUl = document.createElement('ul');
+			let html = '';
+
+			topUl.className = 'name_list';
+			leftUl.className = 'name_list';
+
+			topBox.appendChild(topUl);
+			leftBox.appendChild(leftUl);
+
+			for (let LeftKey in mbtiObj) {
+				html += '<li><p class="title">' + LeftKey + '</p>';
+
+				mbtiObj[LeftKey].forEach(item => {
+					if (!!item) {
+						html += '<p>' + item + '</p>'
+					}
+				});
+
+				// box 생성
+				for (let topKey in mbtiObj) {
+					const matchingBox = document.createElement('div');
+	
+					matchingBox.classList.add(`${LeftKey}_${topKey}`);
+					mbtiBox.appendChild(matchingBox);
+				}
+			}
+
+			html += '</li>';
+			
+			topUl.innerHTML = html;
+			leftUl.innerHTML = html;
+
+		}
+
+		const setMatchingarr = function() {
+			for (let mbti in matchingObj) {
+				for (let color in matchingObj[mbti]) {
+
+					if (matchingObj[mbti][color].length > 0) {
+						matchingObj[mbti][color].forEach((item) => {
+							matchingResult[color].push(mbti + '_' + item);
+							matchingResult[color].push(item + '_' + mbti);
+						});
+					}
+				}
+
+			}
+		}
+
+		const setBackgroundColor = function() {
+			for (let color in matchingResult) {
+				matchingResult[color].forEach(item => {
+					const target = document.querySelector('.' + item);
+					if (target) {
+						target.classList.add(color);
+					}
+				});
+			}
+		}
+	
+		const init = function() {
+			setMbtiHtml();
+			setMatchingarr();
+			setBackgroundColor();
+		}
+	
+		init();
+	</script>
+	
+</body>
+</html>
